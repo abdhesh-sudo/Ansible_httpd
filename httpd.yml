@@ -1,0 +1,32 @@
+---    
+ 
+- name: Playbook for httpd.yml
+  hosts: all
+  tasks:
+    - name: Install http package
+      package:
+         name: "httpd"
+         state: present
+ 
+ 
+    - name: copy index.html.j2 file to /var/www/html/index.html
+      template:
+         src: "index.html.j2"
+         dest: "/var/www/html/index.html"
+      notify: restart httpd service
+ 
+ 
+    - name: start httpd service
+      service:
+         name: "httpd"
+         state: started
+         enabled: yes
+ 
+  handlers:
+    - name: restart httpd service
+      service:
+        name: "httpd"
+        state: restarted
+ 
+ 
+...     
